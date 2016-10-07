@@ -1,0 +1,17 @@
+@import "core/normalize";
+@import "core/print";
+@import "core/grid";
+@import "core/typography";
+@import "core/mixins";
+@import "core/fontawesome/scss/font-awesome";
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: $font-family-sans-serif;
+	font-size: $font-size-root;
+}
+
+

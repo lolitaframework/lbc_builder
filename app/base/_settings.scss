@@ -1,0 +1,89 @@
+@import "./utils/_assert-ascending";
+
+//*****************************************************************************
+// Settings
+//*****************************************************************************
+
+
+// Body
+//*****************************************************************************
+
+$body-bg:    #fff !default;
+$body-color: #000 !default;
+
+
+// Grid breakpoints
+//*****************************************************************************
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 544px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;
+@include _assert-ascending($grid-breakpoints, "$grid-breakpoints");
+
+
+// Grid containers
+//*****************************************************************************
+
+$container-max-widths: (
+  sm: 576px,
+  md: 720px,
+  lg: 940px,
+  xl: 1140px
+) !default;
+@include _assert-ascending($container-max-widths, "$container-max-widths");
+
+
+// Grid columns
+//*****************************************************************************
+
+$grid-columns:      12 !default;
+$grid-gutter-width: 30px !default;
+
+
+// Z-indexes
+//*****************************************************************************
+
+$zindex-dropdown-backdrop:  990 !default;
+$zindex-navbar:            1000 !default;
+$zindex-dropdown:          1000 !default;
+$zindex-popover:           1060 !default;
+$zindex-tooltip:           1070 !default;
+$zindex-navbar-fixed:      1030 !default;
+$zindex-navbar-sticky:     1030 !default;
+$zindex-modal-bg:          1040 !default;
+$zindex-modal:             1050 !default;
+
+
+// Typography
+//*****************************************************************************
+
+$font-family-sans-serif: 'Open Sans', sans-serif;
+$font-family-serif:      Georgia, "Times New Roman", Times, serif !default;
+$font-family-monospace:  Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-base:       $font-family-sans-serif !default;
+
+$font-size-root: 14px !default;
+
+$font-size-base: 1rem !default;
+$font-size-lg:   1rem !default;
+$font-size-sm:   .875rem !default;
+$font-size-xs:   .75rem !default;
+
+$line-height-base: 1.5 !default;
+
+$font-size-h1: 1.7142rem !default;
+$font-size-h2: 1.5rem !default;
+$font-size-h3: 1.2rem !default;
+$font-size-h4: 1.1 !default;
+$font-size-h5: 1.1rem !default;
+$font-size-h6: 1rem !default;
+
+$headings-margin-bottom: 16px !default;
+$headings-font-family:   inherit !default;
+$headings-font-weight:   500 !default;
+$headings-line-height:   1.1 !default;
+$headings-color:         inherit !default;

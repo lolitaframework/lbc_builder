@@ -1,0 +1,30 @@
+@mixin optional-at-root($vendor_selector) {
+  $selector: '';
+  @if not(&) {
+    $selector: $vendor_selector;
+  } 
+  @else {
+    $selector: selector-append(&, $vendor_selector);
+  }
+  @at-root #{$selector} {
+    @content;
+  }
+}
+
+@mixin placeholder {
+  @include optional-at-root('::-webkit-input-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root('::-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-ms-input-placeholder') {
+    @content;
+  }
+}

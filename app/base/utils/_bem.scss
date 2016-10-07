@@ -1,0 +1,203 @@
+@import "utils";
+$elementSeparator: '__';
+$modifierSeparator: '--';
+//
+//
+//
+@function is_empty_element($element) {
+    @if $element==null {
+        @return true;
+    }
+    @else {
+        @return false;
+    }
+}
+
+@function is_pseudo_element($element) {
+    @if str-index($element, ':') !=null {
+        @return true;
+    }
+    @else {
+        @return false;
+    }
+}
+
+@function is_modifier($element) {
+    @if str-index($element, $modifierSeparator) !=null {
+        @return true;
+    }
+    @else {
+        @return false;
+    }
+}
+
+@function is_block($element) {
+    @if not(is_pseudo_element($element)) and not(is_modifier($element)) and not(is_element($element)) {
+        @return true;
+    }
+    @else {
+        @return false;
+    }
+}
+
+@function is_element($element) {
+    @if str-index($element, $elementSeparator) !=null {
+        @return true;
+    }
+    @else {
+        @return false;
+    }
+}
+
+@function get_pseudo_element($element) {
+    @return str-slice($element, str-index($element, ':'));
+}
+
+@function clear_block($element) {
+    @if is_element($element) {
+        $element: str-slice($element, 1, str-index($element, $elementSeparator)-1);
+    }
+    @return clear_element($element);
+}
+
+@function clear_element($element) {
+    @if is_modifier($element) {
+        $element: str-slice($element, 1, str-index($element, $modifierSeparator)-1);
+    }
+    @if is_pseudo_element($element) {
+        $element: str-slice($element, 1, str-index($element, ':')-1);
+    }
+    @return $element;
+}
+
+@function apply-block-selector($selector, $name) {
+    @each $tags in $selector {
+        @if is_empty_element(last($tags)) {
+            $selector: selector-append($name);
+        }
+        @else {
+            @error "Block cannot be inside another selector, use mix for that"
+        }
+    }
+    @return $selector;
+}
+
+@function apply-element-selector($selector, $name) {
+    @each $tags in $selector {
+        $last: last($tags);
+        $cleared_block: clear_block($last);
+        @if is_empty_element($last) {
+            @error "Element should be inside a block";
+        }
+        @else if is_pseudo_element($last) {
+            $selector: join($selector, $cleared_block + $elementSeparator + $name);
+        }
+        @else if is_modifier($last) {
+            $selector: join($selector, $cleared_block + $elementSeparator + $name);
+        }
+        @else if is_element($last) {
+            @error "Element should be inside an element";
+        }
+        @else if is_block($last) {
+            $selector: selector-append($selector, $elementSeparator + $name);
+        }
+    }
+    @return $selector;
+}
+
+@function apply-modifier-selector($selector, $name) {
+    @each $tags in $selector {
+        $last: last($tags);
+        $cleared_element: clear_element($last);
+        @if is_empty_element(last($last)) {
+            @error "Modifier should be inside bem-element";
+        }
+        @else if is_pseudo_element(last($last)) {
+            $selector: join($selector, $cleared_element + $modifierSeparator + $name);
+        }
+        @else if is_modifier(last($last)) {
+            @error "Modifier cannot be inside another mo";
+        }
+        @else if is_element(last($last)) {
+            $selector: selector-append($selector, $modifierSeparator + $name);
+        }
+        @else if is_block(last($last)) {
+            $selector: selector-append($selector, $modifierSeparator + $name);
+        }
+    }
+    @return $selector;
+}
+
+@function apply-mix-selector($selector, $name, $parent) {
+    @if not(is_block($name)) {
+        @error "Mix should use for blocks";
+    }
+    @each $tags in $selector {
+        $last: last($tags);
+        $cleared_block: clear_block($last);
+        $cleared_element: clear_element($last);
+        @if is_pseudo_element(last($last)) or is_modifier(last($last)) {
+            @if $parent==null {
+                @debug $cleared_element+'.'+$cleared_block+$elementSeparator+$name+get_pseudo_element($last);
+                $selector: selector-replace($selector, $last, $cleared_element + $cleared_block + $elementSeparator + $name + get_pseudo_element($last));
+            }
+            @else {
+                $selector: join($selector, $cleared_block + $elementSeparator + $parent + '.' + $name);
+            }
+        }
+        @else if is_element($last) {
+            @if $parent==null {
+                $selector: selector-append($selector, '.' + $name);
+            }
+            @else {
+                @error "Mix should be applied to an element";
+            }
+        }
+        @else if is_block(last($last)) {
+            @if $parent !=null {
+                $selector: selector-append($selector, $elementSeparator + $parent + '.' + $name);
+            }
+            @else {
+                @error "Mix should be applied to an element";
+            }
+        }
+        @else {
+            @error "Mix should be applied to an element";
+        }
+    }
+    @return $selector;
+}
+
+@mixin block($name) {
+    $selector: apply-block-selector(&, $name);
+    .#{$selector} {
+        @content;
+    }
+}
+
+@mixin element($name) {
+    $selector: apply-element-selector(&, $name);
+    @at-root {
+        #{$selector} {
+            @content;
+        }
+    }
+}
+
+@mixin modifier($name) {
+    $selector: apply-modifier-selector(&, $name);
+    @at-root {
+        #{$selector} {
+            @content;
+        }
+    }
+}
+
+@mixin mix($name, $parent: null) {
+    $selector: apply-mix-selector(&, $name, $parent);
+    @at-root {
+        #{$selector} {
+            @content;
+        }
+    }
+}
