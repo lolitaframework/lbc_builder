@@ -32,7 +32,7 @@ var general_scss_route_from = 'app/general/scss/*.scss';
 var general_scss_route_to = 'dist/css';
 var general_scss_route_file_name = 'general.css';
 
-var general_js_route_from = 'app/general/js/*.js';
+var general_js_route_from = ['app/general/js/*.js', '!app/general/js/_*.js'];
 var general_js_route_to = 'dist/js';
 var general_js_route_file_name = 'general.js';
 
@@ -52,7 +52,7 @@ var layouts_scss_route_from = 'app/layouts/**/scss/*.scss';
 var layouts_scss_route_to = 'dist/css';
 var layouts_scss_route_file_name = 'layouts.css';
 
-var layouts_js_route_from = 'app/layouts/**/js/*.js';
+var layouts_js_route_from = ['app/layouts/**/js/*.js', '!app/layouts/**/js/_*.js'];
 var layouts_js_route_to = 'dist/js';
 var layouts_js_route_file_name = 'layouts.js';
 
@@ -69,7 +69,7 @@ var modules_scss_route_from = ['app/modules/**/scss/*.scss', '!app/modules/_comp
 var modules_scss_route_to = 'dist/css';
 var modules_scss_route_file_name = 'modules.css';
 
-var modules_js_route_from = ['app/modules/**/js/*.js', '!app/modules/_components'];
+var modules_js_route_from = ['app/modules/**/js/*.js', '!app/modules/_components', '!app/modules/**/js/_*.js'];
 var modules_js_route_to = 'dist/js';
 var modules_js_route_file_name = 'modules.js';
 
@@ -88,7 +88,7 @@ var components_scss_route_from = ['app/modules/_components/**/scss/*.scss'];
 var components_scss_route_to = 'dist/css';
 var components_scss_route_file_name = 'components.css';
 
-var components_js_route_from = ['app/modules/_components/**/js/*.js'];
+var components_js_route_from = ['app/modules/_components/**/js/*.js', '!app/modules/_components/**/js/_*.js'];
 var components_js_route_to = 'dist/js';
 var components_js_route_file_name = 'components.js';
 
@@ -103,6 +103,12 @@ var components_images_route_to = 'dist/img';
 var templates_html_route_from = 'app/*.html';
 var templates_html_route_cache = 'app/tmp';
 var templates_html_route_to = 'dist/';
+
+//vendors
+var vendors_js_route_from = ['app/general/js/_*.js', 'app/layouts/**/js/_*.js', 'app/modules/**/js/_*.js', 'app/modules/_components/**/js/_*.js'];
+var vendors_js_route_file_name = 'vendors.js';
+var vendors_js_route_to = 'dist/js';
+
 
 /* Handlers */
 
@@ -173,7 +179,7 @@ function buildTemplates() {
 
 /* Default Task */
 
-gulp.task('default', ['base', 'general', 'layouts', 'modules', 'components', 'templates'], function() {
+gulp.task('default', ['base', 'general', 'layouts', 'modules', 'components', 'templates', 'vendors'], function() {
     browserSync.init({
         logLevel: "info",
         port: 8080,
@@ -330,6 +336,14 @@ gulp.task('templates', function() {
     );
 });
 
+gulp.task('vendors', function() {
+    gulp.watch(vendors_js_route_from,
+        function() {
+            makeJS(vendors_js_route_from, vendors_js_route_to, vendors_js_route_file_name);
+        }
+    );
+});
+
 gulp.task('build', ['removedist', 'clearcache', 'clearhtmlcache'], function() {
     //base
     makeSCSS(base_scss_route_from, base_scss_route_to, base_scss_route_file_name);
@@ -356,4 +370,6 @@ gulp.task('build', ['removedist', 'clearcache', 'clearhtmlcache'], function() {
     makeJS(components_js_route_from, components_js_route_to, components_js_route_file_name);
     copyImages(components_images_route_from, components_images_route_to);
     makeTS(components_ts_route_from, components_ts_route_to, components_ts_route_file_name);
+    //vendors
+    makeJS(vendors_js_route_from, vendors_js_route_to, vendors_js_route_file_name);
 });
