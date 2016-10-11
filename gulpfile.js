@@ -152,7 +152,10 @@ function copyImages(folder_from, folder_to) {
         .pipe(gulp.dest(folder_to));
 }
 
-function copyFiles(folder_from, folder_to, callback = function() {}) {
+function copyFiles(folder_from, folder_to, callback) {
+    if (typeof(callback) == "undefined") {
+        callback = function() {};
+    }
     gulp.src(folder_from)
         .pipe(flatten())
         .pipe(gulp.dest(folder_to))
