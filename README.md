@@ -1,4 +1,4 @@
-# LBC - Builder
+# LBC (Layer Block Component) - Builder
 ------------
 This is a builder for LBC projects.
 
