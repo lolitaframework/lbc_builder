@@ -129,16 +129,12 @@ $modifierSeparator: '--';
 }
 
 @function apply-mix-selector($selector, $name, $parent) {
-    @if not(is_block($name)) {
-        @error "Mix should use for blocks";
-    }
     @each $tags in $selector {
         $last: last($tags);
         $cleared_block: clear_block($last);
         $cleared_element: clear_element($last);
         @if is_pseudo_element(last($last)) or is_modifier(last($last)) {
             @if $parent==null {
-                @debug $cleared_element+'.'+$cleared_block+$elementSeparator+$name+get_pseudo_element($last);
                 $selector: selector-replace($selector, $last, $cleared_element + $cleared_block + $elementSeparator + $name + get_pseudo_element($last));
             }
             @else {
