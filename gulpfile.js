@@ -16,6 +16,8 @@ var removeCode = require('gulp-remove-code');
 var removeEmptyLines = require('gulp-remove-empty-lines');
 var sourcemaps = require('gulp-sourcemaps');
 var typescript = require('gulp-typescript');
+var argv = require('yargs').argv;
+var dedupe = require('gulp-dedupe');
 
 /* Routes */
 
@@ -119,7 +121,9 @@ function makeSCSS(folder_from, folder_to, dest_file) {
             browsers: ['> 1%'],
             cascade: false
         }))
-        .pipe(cleanCSS({ compatibility: 'ie10' }))
+        .pipe(cleanCSS({
+            compatibility: 'ie10'
+        }))
         .pipe(concat(dest_file))
         .pipe(gulp.dest(folder_to));
 }
@@ -127,19 +131,22 @@ function makeSCSS(folder_from, folder_to, dest_file) {
 
 function makeJS(folder_from, folder_to, dest_file) {
     gulp.src(folder_from)
+        .pipe(flatten())
         .pipe(sourcemaps.init())
         .pipe(uglify())
+        .pipe(dedupe())
         .pipe(concat(dest_file))
-        .pipe(flatten())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(folder_to));
 }
 
 function makeTS(folder_from, folder_to, dest_file) {
     gulp.src(folder_from)
+        .pipe(flatten())
         .pipe(sourcemaps.init())
         .pipe(typescript())
         .pipe(uglify())
+        .pipe(dedupe())
         .pipe(concat(dest_file))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(folder_to));
@@ -169,7 +176,9 @@ function makeHTML(folder_from, folder_cache, folder_to) {
             prefix: '@@',
             basepath: folder_cache
         }))
-        .pipe(removeCode({ production: true }))
+        .pipe(removeCode({
+            production: true
+        }))
         .pipe(removeEmptyLines())
         .pipe(gulp.dest(folder_to));
 }
@@ -214,6 +223,15 @@ gulp.task('clearcache', function() {
 
 gulp.task('makehtml', function() {
     buildTemplates();
+});
+
+gulp.task('wp_push', function() {
+    if (argv.d !== undefined && argv.d !== true) {
+        gulp.src('./dist/**/*')
+            .pipe(gulp.dest('../' + argv.d + '/app/assets/'));
+    } else {
+        console.log("Use format: gulp wp_push --d project_folder");
+    }
 });
 
 gulp.task('base', function() {

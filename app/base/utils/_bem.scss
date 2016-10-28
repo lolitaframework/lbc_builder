@@ -116,7 +116,7 @@ $modifierSeparator: '--';
             $selector: join($selector, $cleared_element + $modifierSeparator + $name);
         }
         @else if is_modifier(last($last)) {
-            @error "Modifier cannot be inside another mo";
+            $selector: selector-append($selector, $cleared_element + $modifierSeparator + $name);
         }
         @else if is_element(last($last)) {
             $selector: selector-append($selector, $modifierSeparator + $name);

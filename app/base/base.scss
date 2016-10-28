@@ -1,7 +1,6 @@
 @import "core/normalize";
 @import "core/print";
 @import "core/grid";
-@import "core/typography";
 @import "core/mixins";
 @import "core/fontawesome/scss/font-awesome";
 
@@ -12,6 +11,11 @@
 html {
 	font-family: $font-family-sans-serif;
 	font-size: $font-size-root;
+}
+
+body {
+	background-color: $body-bg;
+	color: $body-color;
 }
 
 
