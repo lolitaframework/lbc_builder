@@ -71,15 +71,15 @@ var modules_scss_route_from = ['app/modules/**/scss/*.scss', '!app/modules/_comp
 var modules_scss_route_to = 'dist/css';
 var modules_scss_route_file_name = 'modules.css';
 
-var modules_js_route_from = ['app/modules/**/js/*.js', '!app/modules/_components', '!app/modules/**/js/_*.js'];
+var modules_js_route_from = ['app/modules/**/js/*.js', '!app/modules/_components/**/js/*.js', '!app/modules/**/js/_*.js'];
 var modules_js_route_to = 'dist/js';
 var modules_js_route_file_name = 'modules.js';
 
-var modules_ts_route_from = ['app/modules/**/ts/*.ts', '!app/modules/_components'];
+var modules_ts_route_from = ['app/modules/**/ts/*.ts', '!app/modules/_components/**/ts/*.ts'];
 var modules_ts_route_file_name = 'modules-ts.js';
 var modules_ts_route_to = 'dist/js';
 
-var modules_images_route_from = ['app/modules/**/img/*.*', '!app/modules/_components'];
+var modules_images_route_from = ['app/modules/**/img/*.*', '!app/modules/_components/**/img/*.*'];
 var modules_images_route_to = 'dist/img';
 
 var modules_html_route_from = ['app/modules/**/*.html', '!app/tmp/*.html'];
@@ -98,7 +98,7 @@ var components_ts_route_from = ['app/modules/_components/**/ts/*.ts'];
 var components_ts_route_file_name = 'components-ts.js';
 var components_ts_route_to = 'dist/js';
 
-var components_images_route_from = ['app/modules/_components/**/img/*.*']
+var components_images_route_from = ['app/modules/_components/**/img/*.*'];
 var components_images_route_to = 'dist/img';
 
 //templates
@@ -154,7 +154,7 @@ function makeTS(folder_from, folder_to, dest_file) {
 
 function copyImages(folder_from, folder_to) {
     gulp.src(folder_from)
-        .pipe(cache(imagemin()))
+        .pipe(imagemin())
         .pipe(flatten())
         .pipe(gulp.dest(folder_to));
 }
