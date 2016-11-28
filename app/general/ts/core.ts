@@ -15,19 +15,19 @@ namespace LolitaFramework {
 	 */
 	export abstract class Block {
 		/**
-		 * [Block object]
+		 * Block object
 		 * @type {JQuery}
 		 */
 		protected block: JQuery;
 
 		/**
-		 * [Block selector]
+		 * Block selector
 		 * @type {string}
 		 */
 		protected blockSelector: string;
 
 		/**
-		 * [Constructor]
+		 * Constructor
 		 */
 		constructor(blockSelector: string) {
 			this.blockSelector = blockSelector;
@@ -45,19 +45,19 @@ namespace LolitaFramework {
 	export abstract class MediaBreakpoints extends Block {
 
 		/**
-		 * [Array of device types]
+		 * Array of device types
 		 * @type {Array}
 		 */
-		protected static mediaBreakpoints: Array<Breakpoint> = [];
+		protected static mediaBreakpoints: Array<Breakpoint> = ;
 
 		/**
-		 * [Current device type]
+		 * Current device type
 		 * @type {Breakpoint}
 		 */
 		protected static currentDeviceType: Breakpoint;
 
 		/**
-		 * [Constructor]
+		 * Constructor
 		 */
 		constructor(blockSelector: string) {
 			super(blockSelector);
@@ -70,12 +70,12 @@ namespace LolitaFramework {
 		}
 
 		/**
-		 * [On breakpoint changed]
+		 * On breakpoint changed
 		 */
 		protected abstract onBreakpointChange(breakpoint: Breakpoint): void;
 
 		/**
-		 * [On screen resize]
+		 * On screen resize
 		 */
 		protected onResize() {
 			MediaBreakpoints.mediaBreakpoints = MediaBreakpoints.mediaBreakpoints.sort((a, b): number => {
@@ -111,8 +111,8 @@ namespace LolitaFramework {
 		}
 
 		/**
-		 * [Added breakpoint to mediaBreakpoints value]
-		 * @param {Breakpoint} breakpoint [description]
+		 * Added breakpoint to mediaBreakpoints value
+		 * @param {Breakpoint} breakpoint description
 		 */
 		public static addMediaBreakpoin(breakpoint: Breakpoint): void {
 			if (!breakpoint.name) {
