@@ -3,13 +3,16 @@
 namespace LolitaFramework {
 
 	/**
-	 * Block generic Class
+	 * Breakpoint interface
 	 */
 	export interface Breakpoint {
 		name: string,
 		upValue: number
 	}
 
+	/**
+	 * Block generic Class
+	 */
 	export abstract class Block {
 		/**
 		 * [Block object]
