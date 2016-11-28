@@ -3,7 +3,7 @@
 namespace LolitaFramework {
 
 	/**
-	 * Block general Class
+	 * Block generic Class
 	 */
 	export interface Breakpoint {
 		name: string,
@@ -37,7 +37,7 @@ namespace LolitaFramework {
 	}
 
 	/**
-	 * 
+	 * MediaBreakpoints supporting
 	 */
 	export abstract class MediaBreakpoints extends Block {
 
