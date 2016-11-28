@@ -96,7 +96,7 @@ $modifierSeparator: '--';
             $selector: join($selector, $cleared_block + $elementSeparator + $name);
         }
         @else if is_element($last) {
-            @error "Element should be inside an element";
+            $selector: selector-append($selector, $elementSeparator + $name);
         }
         @else if is_block($last) {
             $selector: selector-append($selector, $elementSeparator + $name);

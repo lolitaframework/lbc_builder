@@ -1,0 +1,2 @@
+var __extends=this&&this.__extends||function(t,o){function n(){this.constructor=t}for(var e in o)o.hasOwnProperty(e)&&(t[e]=o[e]);t.prototype=null===o?Object.create(o):(n.prototype=o.prototype,new n)},LolitaFramework;!function(t){var o=function(t){function o(o){t.call(this,o)}return __extends(o,t),o.prototype.onBreakpointChange=function(t){},o}(t.MediaBreakpoints);t.bLogo=o;new o(".b-logo")}(LolitaFramework||(LolitaFramework={}));
+//# sourceMappingURL=modules-ts.js.map
